@@ -2,23 +2,24 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Models\Locataire;
+use App\Models\Site;
+use App\Policies\LocatairePolicy;
+use App\Policies\SitePolicy;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        //
-    }
 
+    protected $policies = [
+        Locataire::class => LocatairePolicy::class,
+        Site::class => SitePolicy::class,
+    ];
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
-        //
+        $this->registerPolicies();
     }
 }

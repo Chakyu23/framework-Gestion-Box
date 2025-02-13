@@ -1,8 +1,11 @@
 @extends('layouts.app')
 
+@section('title', 'Liste des Locataires')
+
 @section('content')
     <div class="container">
         <h1 class="mb-4">Liste des Locataires</h1>
+        <a href="{{ route('locataires.create') }}" class="btn btn-success mb-3">Ajouter un Locataire</a>
         <table class="table table-striped">
             <thead>
             <tr>

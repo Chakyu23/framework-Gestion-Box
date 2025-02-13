@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\Box_ModelsController;
-use App\Http\Controllers\LocatairesController;
+use App\Http\Controllers\Box_ModelController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LocataireController;
 
-Route::get('/', function () {
-    return view('dashboard');
-});
+Route::get('/', [HomeController::class, 'index'])->name('dashboard');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -19,14 +20,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::controller(LocatairesController::class)->group(function () {
-    Route::get('/Locataires', 'list');
-    Route::get('/Locataire', 'store');
-    Route::post('/Locataire/New', 'create');
-    Route::get('/Locataire/{id}', 'show');
-    Route::get('/Locataire/{id}/Edit', 'edit');
-    Route::put('/Locataire/{id}', 'update');
-    Route::delete('/Locataire/{id}', 'delete');
-});
-
+Route::resource('locataire', LocataireController::class)->middleware('auth');
+Route::resource('site', SiteController::class)->middleware('auth');
 require __DIR__.'/auth.php';

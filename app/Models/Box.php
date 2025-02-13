@@ -24,9 +24,9 @@ class Box extends Model
         return $this->belongsTo(Box_models::class, "model_id");
     }
     public function belong_site() {
-        return $this->belongsTo(Sites::class, "site_id");
+        return $this->belongsTo(Site::class, "site_id");
     }
     public function belong_locataires() {
-        return $this->belongsTo(Locataires::class, "locataire_id");
+        return $this->belongsTo(Locataire::class, "locataire_id");
     }
 }

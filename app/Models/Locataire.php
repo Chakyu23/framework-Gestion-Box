@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Locataires extends Model
+class Locataire extends Model
 {
     protected $table="locataires";
     protected $fillable = [
