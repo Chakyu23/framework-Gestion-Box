@@ -14,7 +14,7 @@ class LocatairesController extends Controller
         ]);
     }
     public function list(): View {
-        return view( 'Locataire_list');
+        return view( 'Locataire_List');
     }
     public function store(): View {
         return view( 'Locataire_store');
