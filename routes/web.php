@@ -1,14 +1,11 @@
 <?php
 
-use App\Http\Controllers\Box_ModelController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocataireController;
 
 Route::get('/', [HomeController::class, 'index'])->name('dashboard');
-
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -21,5 +18,5 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('locataire', LocataireController::class)->middleware('auth');
-Route::resource('site', SiteController::class)->middleware('auth');
+
 require __DIR__.'/auth.php';

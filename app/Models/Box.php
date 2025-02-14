@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Box extends Model
 {
-    protected $table="box";
+    protected $table="modelBox";
     protected $fillable = [
         'designation',
         'prices',

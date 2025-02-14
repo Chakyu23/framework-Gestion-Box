@@ -5,7 +5,7 @@
 @section('content')
     <div class="container">
         <h1>Ajouter un Locataire</h1>
-        <form method="POST" action="{{ route('locataires.store') }}">
+        <form method="POST" action="{{ route('locataire.store') }}">
             @csrf
             <div class="mb-3">
                 <label class="form-label">Prénom</label>

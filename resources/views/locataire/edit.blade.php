@@ -6,7 +6,7 @@
     <div class="container">
         <h2>Modifier le Locataire</h2>
 
-        <form action="{{ route('locataires.update', $locataire->id) }}" method="POST">
+        <form action="{{ route('locataire.update', $locataire->id) }}" method="POST">
             @csrf
             @method('PUT')
 
