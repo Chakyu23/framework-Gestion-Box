@@ -25,7 +25,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::resource('boxes', BoxController::class);
     Route::resource('tenants', TenantController::class);
-    Route::resource('contract-models', ContractModelController::class);
+    Route::resource('contractModels', ContractModelController::class);
     Route::resource('contracts', ContractController::class);
     Route::resource('bills', BillController::class);
 });

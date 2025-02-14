@@ -16,10 +16,10 @@
                 </div>
 
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('contract-models.index') }}" class="btn btn-secondary">Retour</a>
-                    <a href="{{ route('contract-models.edit', $contractModel->id) }}" class="btn btn-warning">Modifier</a>
+                    <a href="{{ route('contractModels.index') }}" class="btn btn-secondary">Retour</a>
+                    <a href="{{ route('contractModels.edit', $contractModel->id) }}" class="btn btn-warning">Modifier</a>
 
-                    <form action="{{ route('contract-models.destroy', $contractModel->id) }}" method="POST" class="d-inline">
+                    <form action="{{ route('contractModels.destroy', $contractModel->id) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce modèle ?')">

@@ -17,7 +17,7 @@
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link" href="{{ route('boxes.index') }}">Boxes</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('tenants.index') }}">Locataires</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('contract-models.index') }}">Modèles de Contrat</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('contractModels.index') }}">Modèles de Contrat</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('contracts.index') }}">Contrats</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('bills.index') }}">Factures</a></li>
 

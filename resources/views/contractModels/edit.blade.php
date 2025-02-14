@@ -4,7 +4,7 @@
     <div class="container">
         <h2 class="mb-4">Modifier le Modèle de Contrat</h2>
 
-        <form action="{{ route('contract-models.update', $contractModel->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('contractModels.update', $contractModel->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -30,7 +30,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary">Sauvegarder</button>
-            <a href="{{ route('contract-models.index') }}" class="btn btn-secondary">Annuler</a>
+            <a href="{{ route('contractModels.index') }}" class="btn btn-secondary">Annuler</a>
         </form>
     </div>
 

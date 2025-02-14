@@ -17,7 +17,7 @@
                         </div>
                         <div class="card-body">
                             <p><strong>Adresse:</strong> {{ $box->address }}</p>
-                            <p><strong>Prix:</strong> €{{ number_format($box->prices, 2) }}</p>
+                            <p><strong>Prix:</strong> {{ number_format($box->prices, 2) }} €</p>
 
                             @php
                                 // Vérification si un contrat est actif pour ce box
