@@ -19,6 +19,19 @@
                         <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
                     </div>
 
+                    <div class="mb-3">
+                        <h5>Variables utilisables :</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item">%nomClient%</li>
+                            <li class="list-group-item">%adresseClient%</li>
+                            <li class="list-group-item">%telephoneClient%</li>
+                            <li class="list-group-item">%emailClient%</li>
+                            <li class="list-group-item">%dateDebutContrat%</li>
+                            <li class="list-group-item">%dateFinContrat%</li>
+                            <li class="list-group-item">%loyerMensuel%</li>
+                        </ul>
+                    </div>
+
                     <button type="submit" class="btn btn-success">Enregistrer</button>
                     <a href="{{ route('contractModels.index') }}" class="btn btn-secondary">Annuler</a>
                 </form>
