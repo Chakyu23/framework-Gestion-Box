@@ -2,31 +2,32 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Box extends Model
 {
-    protected $table="modelBox";
+    use HasFactory;
+
+    protected $table = 'boxes';
+
     protected $fillable = [
-        'designation',
+        'name',
+        'address',
         'prices',
-        'user_id',
-        'model_id',
-        'site_id',
-        'locataire_id',
-        'active'
+        'owner_id'
     ];
 
-    public function belong_user() {
-        return $this->belongsTo(User::class, "user_id");
+    /**
+     * Relation avec l'utilisateur (propriétaire du box)
+     */
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
     }
-    public function belong_model() {
-        return $this->belongsTo(Box_models::class, "model_id");
-    }
-    public function belong_site() {
-        return $this->belongsTo(Site::class, "site_id");
-    }
-    public function belong_locataires() {
-        return $this->belongsTo(Locataire::class, "locataire_id");
+
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class, 'box_id');
     }
 }
