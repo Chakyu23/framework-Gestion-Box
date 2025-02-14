@@ -33,11 +33,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+
     protected function casts(): array
     {
         return [
@@ -46,11 +42,24 @@ class User extends Authenticatable
         ];
     }
 
-    public function has_locataires() {
-        return $this->hasMany(locataires::class);
+    public function contractModels()
+    {
+        return $this->hasMany(ContractModel::class, 'owner_id');
     }
-
-    public function has_box() {
-        return $this->hasMany(box::class);
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class, 'owner_id');
+    }
+    public function tenants()
+    {
+        return $this->hasMany(Tenant::class, 'data_owner_id');
+    }
+    public function boxes()
+    {
+        return $this->hasMany(Box::class, 'owner_id');
+    }
+    public function bills()
+    {
+        return $this->hasManyThrough(Bill::class, Contract::class, 'owner_id', 'contract_id');
     }
 }
