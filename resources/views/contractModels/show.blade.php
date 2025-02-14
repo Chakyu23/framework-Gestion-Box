@@ -4,37 +4,15 @@
     <div class="container">
         <h2 class="mb-4">Détails du Modèle de Contrat</h2>
 
-        <div class="card shadow-lg">
+        <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Nom du Modèle : {{ $contractModel->name }}</h5>
-
-                <div class="mb-3">
-                    <label for="content" class="form-label">Contenu du Modèle</label>
-                    <div id="content-display" class="border p-3" style="min-height: 300px;">
-                        {!! $contractModel->content ? renderEditorJsContent($contractModel->content) : 'Aucun contenu disponible' !!}
-                    </div>
-                </div>
-
-                <div class="d-flex justify-content-between">
-                    <a href="{{ route('contractModels.index') }}" class="btn btn-secondary">Retour</a>
-                    <a href="{{ route('contractModels.edit', $contractModel->id) }}" class="btn btn-warning">Modifier</a>
-
-                    <form action="{{ route('contractModels.destroy', $contractModel->id) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce modèle ?')">
-                            Supprimer
-                        </button>
-                    </form>
-                </div>
+                <h5 class="card-title">{{ $contractModel->name }}</h5>
+                <label class="form-label">Contenu du contrat :</label>
+                <textarea class="form-control" rows="10" readonly>{{ $contractModel->content }}</textarea>
             </div>
         </div>
+
+        <a href="{{ route('contractModels.index') }}" class="btn btn-secondary mt-3">Retour</a>
+        <a href="{{ route('contractModels.edit', $contractModel->id) }}" class="btn btn-primary mt-3">Modifier</a>
     </div>
-
-@endsection
-
-@section('scripts')
-    <script>
-        // Si nécessaire, ajoutez un script pour gérer l'affichage du contenu si c'est nécessaire
-    </script>
 @endsection

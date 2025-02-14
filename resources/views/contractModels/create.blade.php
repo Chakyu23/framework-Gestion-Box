@@ -2,48 +2,27 @@
 
 @section('content')
     <div class="container">
-        <h2 class="mb-4">Créer un Nouveau Modèle de Contrat</h2>
+        <h2 class="mb-4">Créer un Modèle de Contrat</h2>
 
-        <form action="{{ route('contractModels.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
+        <div class="card">
+            <div class="card-body">
+                <form action="{{ route('contractModels.store') }}" method="POST">
+                    @csrf
 
-            <div class="mb-3">
-                <label for="name" class="form-label">Nom du Modèle</label>
-                <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nom du Modèle</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Contenu du contrat</label>
+                        <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                    <a href="{{ route('contractModels.index') }}" class="btn btn-secondary">Annuler</a>
+                </form>
             </div>
-
-            <div class="mb-3">
-                <label for="content" class="form-label">Contenu du Modèle</label>
-                <div id="editorjs"></div>
-                <textarea name="content" id="content" style="display: none;"></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Mots-clés disponibles :</label>
-                <div class="list-group">
-                    <span class="list-group-item">%nomClient% : Le nom du client</span>
-                    <span class="list-group-item">%LoyerMensuel% : Le montant du loyer mensuel</span>
-                    <span class="list-group-item">%dateDebut% : La date de début du contrat</span>
-                    <!-- Ajoutez ici les autres mots-clés si nécessaire -->
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Créer</button>
-            <a href="{{ route('contractModels.index') }}" class="btn btn-secondary">Annuler</a>
-        </form>
+        </div>
     </div>
-
-    @section('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.22.0/dist/editor.js"></script>
-        <script>
-            const editor = new EditorJS({
-                holder: 'editorjs',
-                onChange: (api, event) => {
-                    editor.save().then((outputData) => {
-                        document.getElementById('content').value = JSON.stringify(outputData);
-                    });
-                }
-            });
-        </script>
-    @endsection
 @endsection

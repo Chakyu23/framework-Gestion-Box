@@ -1,39 +1,49 @@
 <?php
 
-namespace App\Helpers;
+use Illuminate\Support\HtmlString;
 
-class EditorJsHelper
-{
-    public static function renderContent($jsonContent)
+if (!function_exists('renderEditorJsContent')) {
+    function renderEditorJsContent($content):HtmlString
     {
-        $data = json_decode($jsonContent, true);
+        // Vérifier si $content est en JSON et le décoder
+        $decodedContent = json_decode($content, true);
 
-        if (!is_array($data)) {
-            return 'Aucun contenu valide.';
+        if (!$decodedContent) {
+            return new HtmlString('<p>Contenu non valide</p>');
         }
 
-        $htmlContent = '';
-        foreach ($data as $block) {
+        $html = '';
+
+        foreach ($decodedContent['blocks'] as $block) {
             switch ($block['type']) {
                 case 'paragraph':
-                    $htmlContent .= '<p>' . nl2br(e($block['data']['text'])) . '</p>';
+                    $html .= '<p>' . e($block['data']['text']) . '</p>';
                     break;
+
                 case 'header':
-                    $htmlContent .= '<h' . $block['data']['level'] . '>' . e($block['data']['text']) . '</h' . $block['data']['level'] . '>';
+                    $level = $block['data']['level'];
+                    $html .= "<h{$level}>" . e($block['data']['text']) . "</h{$level}>";
                     break;
+
                 case 'list':
-                    $htmlContent .= '<ul>';
+                    $listTag = $block['data']['style'] === 'unordered' ? 'ul' : 'ol';
+                    $html .= "<{$listTag}>";
                     foreach ($block['data']['items'] as $item) {
-                        $htmlContent .= '<li>' . e($item) . '</li>';
+                        $html .= '<li>' . e($item) . '</li>';
                     }
-                    $htmlContent .= '</ul>';
+                    $html .= "</{$listTag}>";
                     break;
-                // Ajoutez d'autres types de blocs si nécessaire (images, liens, etc.)
+
+                case 'quote':
+                    $html .= '<blockquote>' . e($block['data']['text']) . '</blockquote>';
+                    break;
+
                 default:
-                    $htmlContent .= '<p>' . e($block['data']['text']) . '</p>';
+                    $html .= '<p>Type de bloc non pris en charge</p>';
+                    break;
             }
         }
 
-        return $htmlContent;
+        return new HtmlString($html);
     }
 }
