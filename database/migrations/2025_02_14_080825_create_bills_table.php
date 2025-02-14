@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->integer('periode_number');
-            $table->date('payment_date');
+            $table->date('payment_date')->nullable();
             $table->double('paiment_amount');
             $table->foreignId('contract_id')->constrained('contracts');
             $table->timestamps();

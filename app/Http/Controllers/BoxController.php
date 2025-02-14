@@ -33,13 +33,12 @@ class BoxController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
-            'prices' => 'required|numeric',
-            'owner_id' => 'required|exists:users,id',
+            'prices' => 'required|numeric'
         ]);
-
         Box::create(array_merge($request->all(), ['owner_id' => Auth::id()]));
 
         return redirect()->route('boxes.index')->with('success', 'Box ajoutée avec succès');

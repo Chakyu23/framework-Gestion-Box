@@ -37,8 +37,7 @@ class TenantController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:tenants,email',
             'phone' => 'required|string|max:15',
-            'address' => 'required|string|max:255',
-            'data_owner_id' => 'required|exists:users,id',
+            'address' => 'required|string|max:255'
         ]);
 
         Tenant::create(array_merge($request->all(), ['data_owner_id' => Auth::id()]));

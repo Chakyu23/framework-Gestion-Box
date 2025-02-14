@@ -15,9 +15,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link" href="{{ route('locataire.index') }}">Locataires</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('site.index') }}">Site d'exploitation</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('modelBox.index') }}">Type de box</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('boxes.index') }}">Boxes</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('tenants.index') }}">Locataires</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('contract-models.index') }}">Modèles de Contrat</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('contracts.index') }}">Contrats</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('bills.index') }}">Factures</a></li>
+
             </ul>
             <ul class="navbar-nav">
                 @auth

@@ -35,8 +35,7 @@ class ContractModelController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'content' => 'required|string',
-            'owner_id' => 'required|exists:users,id',
+            'content' => 'required|string'
         ]);
 
         ContractModel::create(array_merge($request->all(), ['owner_id' => Auth::id()]));
