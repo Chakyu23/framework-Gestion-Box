@@ -16,3 +16,8 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd ${{ secrets.PROJECT_PATH }}
+            git pull
+            php artisan migrate
+            php artisan cache:clear
+            php artisan view:clear
+            php artisan config:clear
