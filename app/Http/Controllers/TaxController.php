@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use PDF; // Barryvdh DomPDF
+
 
 class TaxController extends Controller
 {
@@ -22,7 +24,7 @@ class TaxController extends Controller
     }
 
     /**
-     * Générer un PDF des informations fiscales.
+     * Générer un PDF des informations fiscales avec DomPDF.
      */
     public function generatePdf()
     {
@@ -46,8 +48,10 @@ class TaxController extends Controller
 
         $data = compact('revenuAnnuel', 'regime', 'caseDeclaration', 'montantDeclare', 'montantImposable');
 
-        // Génération du PDF
+        // Générer le PDF avec DomPDF
         $pdf = PDF::loadView('pdf.taxes', $data);
+
+        // Télécharger le fichier PDF
         return $pdf->download('taxes.pdf');
     }
 }

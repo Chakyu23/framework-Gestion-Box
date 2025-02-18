@@ -66,8 +66,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/bills/{bill}/pay', [BillController::class, 'pay'])->name('bills.pay');
 
     // tax
-    Route::get('/taxes', [TaxController::class, 'index'])->name('taxes.index');
-    //Route::get('/taxes/pdf', [TaxController::class, 'generatePdf'])->name('taxes.pdf');
+    Route::get('taxes', [TaxController::class, 'index'])->name('taxes.index');
+    Route::get('taxes/generate-pdf', [TaxController::class, 'generatePdf'])->name('taxes.pdf');
 });
 
 

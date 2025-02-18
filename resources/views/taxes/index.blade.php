@@ -20,5 +20,6 @@
                 @endif
             </div>
         </div>
+        <a href="{{ route('taxes.pdf') }}" class="btn btn-danger mt-3">Télécharger en PDF</a>
     </div>
 @endsection
