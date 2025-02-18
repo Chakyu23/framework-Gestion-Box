@@ -1,6 +1,6 @@
 name: CI/CD Deployment
 
-on: [push]
+on: [merge]
 
 jobs:
   deploy:
