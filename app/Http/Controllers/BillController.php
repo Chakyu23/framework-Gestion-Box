@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Bill;
 use App\Models\Contract;
 use Illuminate\Http\Request;
@@ -103,4 +104,43 @@ class BillController extends Controller
 
         return redirect()->route('bills.index')->with('success', 'Facture supprimée');
     }
+
+    public function generateBills()
+    {
+        // Récupérer la date actuelle
+        $currentDate = Carbon::now();
+
+        // Récupérer tous les contrats actifs (en cours)
+        $contracts = Contract::where('date_start', '<=', $currentDate)
+            ->where('date_end', '>=', $currentDate)
+            ->get();
+
+        // Parcourir chaque contrat pour générer une facture
+        foreach ($contracts as $contract) {
+
+            // Calculer la période actuelle en fonction de la date de début
+            $startDate = new \DateTime($contract->date_start);
+            $monthsElapsed = $startDate->diff($currentDate)->m + ($startDate->diff($currentDate)->y * 12); // Calcul du nombre de mois depuis la date de début
+
+            // Vérifier si une facture existe déjà pour ce contrat et cette période
+            $existingBill = Bill::where('contract_id', $contract->id)
+                ->where('periode_number', $monthsElapsed + 1) // On vérifie la période
+                ->first();
+
+            // Si aucune facture n'existe pour cette période, générer une nouvelle facture
+            if (!$existingBill) {
+                // Créer une nouvelle facture pour la période
+                Bill::create([
+                    'contract_id' => $contract->id,
+                    'periode_number' => $monthsElapsed + 1, // Période basée sur le nombre de mois depuis le début
+                    'paiment_amount' => $contract->monthly_price,
+                    'payment_date' => null, // Pas encore payé, donc on laisse null
+                ]);
+            }
+        }
+
+        // Retourner un message ou rediriger après la génération des factures
+        return redirect()->route('contracts.index')->with('success', 'Les factures ont été générées pour les contrats en cours.');
+    }
+
 }

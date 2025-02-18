@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bill;
 use App\Models\Contract;
 use App\Models\User;
 use App\Models\Tenant;
 use App\Models\Box;
 use App\Models\ContractModel;
 use App\Rules\NoOverlappingContracts;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -63,14 +65,13 @@ class ContractController extends Controller
             'date_start' => ['required', 'date'],
             'date_end' => ['required', 'date', 'after:date_start'],
             'monthly_price' => ['required', 'numeric', 'min:0'],
-            'owner_id' => ['required', 'exists:users,id'],
             'tenant_id' => ['required', 'exists:tenants,id'],
             'box_id' => ['required', 'exists:boxes,id', new NoOverlappingContracts($request->box_id, $request->date_start, $request->date_end)],
             'contract_model_id' => ['required', 'exists:contract_models,id'],
         ]);
 
         // Création du contrat
-        $contract = Contract::create($validated);
+        $contract = Contract::create(array_merge($validated, ['owner_id' => Auth::id()]));
 
         // Redirection vers la vue `show` avec l'ID du contrat
         return redirect()->route('contracts.show', $contract->id)

@@ -4,6 +4,15 @@
     <div class="container">
         <h1 class="mb-4">Liste des Contrats</h1>
 
+        <!-- Bouton pour créer un nouveau contrat -->
+        <a href="{{ route('contracts.create') }}" class="btn btn-primary mb-4">Créer un Nouveau Contrat</a>
+
+        <!-- Bouton pour générer les factures pour ce mois -->
+        <form action="{{ route('contracts.generateBills') }}" method="POST" class="mb-4">
+            @csrf
+            <button type="submit" class="btn btn-success">Générer les Factures pour ce Mois</button>
+        </form>
+
         <table class="table table-striped">
             <thead>
             <tr>
@@ -14,6 +23,7 @@
                 <th>Date de Début</th>
                 <th>Date de Fin</th>
                 <th>Prix Mensuel</th>
+                <th>Factures</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -28,6 +38,38 @@
                     <td>{{ $contract->date_end }}</td>
                     <td>{{ number_format($contract->monthly_price, 2, ',', ' ') }} €</td>
                     <td>
+                        <!-- Toggle button to show/hide bills -->
+                        <button class="btn btn-info btn-sm" onclick="toggleBills({{ $contract->id }})">
+                            {{ $contract->bills->isEmpty() ? 'Aucune Facture' : 'Voir Factures' }}
+                        </button>
+                        <div id="bills-{{ $contract->id }}" class="mt-2" style="display: none;">
+                            <ul class="list-group">
+                                @foreach ($contract->bills as $bill)
+                                    @php
+                                        // Conversion de 'date_start' en DateTime
+                                            $startDate = new \DateTime($contract->date_start);
+
+                                            // Ajouter les mois correspondant à la période
+                                            $startDate->modify('+' . ($bill->periode_number - 1) . ' month');
+
+                                            // Formater la date pour afficher mois et année
+                                            $period = $startDate->format('F Y');
+                                    @endphp
+                                    <li class="list-group-item">
+                                        <strong>Période :</strong> {{ $period }} <br>
+                                        <strong>Valeur :</strong> {{ number_format($bill->paiment_amount, 2, ',', ' ') }} € <br>
+                                        @if ($bill->is_paid)
+                                            <span class="text-success"><strong>Payé</strong></span><br>
+                                            <strong>Date de Paiement :</strong> {{ $bill->payment_date }}
+                                        @else
+                                            <span class="text-danger"><strong>Non payé</strong></span><br>
+                                        @endif
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </td>
+                    <td>
                         <a href="{{ route('contracts.show', $contract->id) }}" class="btn btn-info btn-sm">Voir</a>
                         <a href="{{ route('contracts.edit', $contract->id) }}" class="btn btn-warning btn-sm">Modifier</a>
                         <form action="{{ route('contracts.destroy', $contract->id) }}" method="POST" style="display:inline-block;">
@@ -35,26 +77,6 @@
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce contrat ?')">Supprimer</button>
                         </form>
-                        <button class="btn btn-secondary btn-sm" onclick="toggleFactures({{ $contract->id }})">Afficher les Factures</button>
-                    </td>
-                </tr>
-                <tr class="factures" id="factures-{{ $contract->id }}" style="display: none;">
-                    <td colspan="8">
-                        <h5>Factures :</h5>
-                        <ul class="list-group">
-                            @foreach ($contract->bills as $bill)
-                                <li class="list-group-item">
-                                    <strong>Facture {{ $bill->periode_number }}</strong> -
-                                    Date de paiement : {{ $bill->payment_date ? $bill->payment_date->format('d/m/Y') : 'Non réglée' }} -
-                                    Montant : {{ number_format($bill->paiment_amount, 2, ',', ' ') }} €
-                                    @if (!$bill->payment_date)
-                                        <span class="badge bg-danger">Non réglée</span>
-                                    @else
-                                        <span class="badge bg-success">Réglée</span>
-                                    @endif
-                                </li>
-                            @endforeach
-                        </ul>
                     </td>
                 </tr>
             @endforeach
@@ -63,10 +85,14 @@
     </div>
 
     <script>
-        // Script pour afficher/masquer les factures au clic
-        function toggleFactures(contractId) {
-            const facturesRow = document.getElementById(`factures-${contractId}`);
-            facturesRow.style.display = (facturesRow.style.display === 'none') ? 'table-row' : 'none';
+        // Fonction pour afficher ou masquer les factures d'un contrat
+        function toggleBills(contractId) {
+            var billRow = document.getElementById('bills-' + contractId);
+            if (billRow.style.display === 'none' || billRow.style.display === '') {
+                billRow.style.display = 'block';  // Afficher les factures
+            } else {
+                billRow.style.display = 'none';   // Masquer les factures
+            }
         }
     </script>
 @endsection

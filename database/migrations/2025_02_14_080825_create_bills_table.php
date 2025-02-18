@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('periode_number');
             $table->date('payment_date')->nullable();
             $table->double('paiment_amount');
-            $table->foreignId('contract_id')->constrained('contracts');
+            $table->foreignId('contract_id')->constrained('contracts')->onDelete('cascade');
             $table->timestamps();
         });
     }

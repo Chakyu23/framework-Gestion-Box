@@ -29,7 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('contracts', ContractController::class);
     Route::resource('bills', BillController::class);
 });
+Route::post('contracts/generate-bills', [BillController::class, 'generateBills'])->name('contracts.generateBills');
 
-Route::resource('locataire', LocataireController::class)->middleware('auth');
+
 
 require __DIR__.'/auth.php';
