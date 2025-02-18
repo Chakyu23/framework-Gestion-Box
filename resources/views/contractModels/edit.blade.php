@@ -23,13 +23,17 @@
                     <div class="mb-3">
                         <h5>Variables utilisables :</h5>
                         <ul class="list-group">
-                            <li class="list-group-item">%nomClient%</li>
-                            <li class="list-group-item">%adresseClient%</li>
-                            <li class="list-group-item">%telephoneClient%</li>
-                            <li class="list-group-item">%emailClient%</li>
-                            <li class="list-group-item">%dateDebutContrat%</li>
-                            <li class="list-group-item">%dateFinContrat%</li>
-                            <li class="list-group-item">%loyerMensuel%</li>
+                            <li class="list-group-item">%contract_id%</li>
+                            <li class="list-group-item">%contract_start%</li>
+                            <li class="list-group-item">%contract_end%</li>
+                            <li class="list-group-item">%monthly_price%</li>
+                            <li class="list-group-item">%owner_name%</li>
+                            <li class="list-group-item">%tenant_name%</li>
+                            <li class="list-group-item">%tenant_email%</li>
+                            <li class="list-group-item">%tenant_phone%</li>
+                            <li class="list-group-item">%box_name%</li>
+                            <li class="list-group-item">%box_address%</li>
+
                         </ul>
                     </div>
 
