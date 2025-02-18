@@ -16,13 +16,13 @@ class BillController extends Controller
     /**
      * Afficher la liste des factures
      */
-    public function index()
+    public function index(int $contractId)
     {
-        $bills = Bill::whereHas('contract', function ($query) {
-            $query->where('owner_id', Auth::id());
-        })->get();
+        // Récupérer le contrat avec ses factures
+        $contract = Contract::with('bills')->findOrFail($contractId);
 
-        return view('bills.index', compact('bills'));
+        // Passer le contrat et ses factures à la vue
+        return view('bills.index', compact('contract'));
     }
 
     /**
@@ -141,6 +141,15 @@ class BillController extends Controller
 
         // Retourner un message ou rediriger après la génération des factures
         return redirect()->route('contracts.index')->with('success', 'Les factures ont été générées pour les contrats en cours.');
+    }
+
+    public function pay(Bill $bill)
+    {
+        if (!$bill->payment_date) {
+            $bill->update(['payment_date' => now()]);
+        }
+
+        return redirect()->back()->with('success', 'Facture marquée comme payée.');
     }
 
 }

@@ -1,86 +1,59 @@
+
 @extends('layouts.app')
 
 @section('content')
     <div class="container">
-        <h2 class="mb-4">Liste des Box</h2>
-
+        <h1 class="mb-4">Liste des Box</h1>
         <div class="mb-4">
             <a href="{{ route('boxes.create') }}" class="btn btn-primary">Ajouter un Box</a>
         </div>
-
         <div class="row">
             @foreach ($boxes as $box)
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title">{{ $box->name }}</h5>
-                        </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm">
                         <div class="card-body">
-                            <p><strong>Adresse:</strong> {{ $box->address }}</p>
-                            <p><strong>Prix:</strong> {{ number_format($box->prices, 2) }} €</p>
+                            <h5 class="card-title">{{ $box->name }}</h5>
+                            <p class="card-text"><strong>Adresse :</strong> {{ $box->address }}</p>
+                            <p class="card-text"><strong>Tarif :</strong> {{ number_format($box->prices, 2, ',', ' ') }} €</p>
 
                             @php
-                                // Vérification si un contrat est actif pour ce box
-                                $isOccupied = false;
-                                $currentDate = now();
-                                $lastPaymentDate = null;
-
-                                foreach ($box->contracts as $contract) {
-                                    if ($contract->date_start <= $currentDate && $contract->date_end >= $currentDate && $contract->active) {
-                                        $isOccupied = true;
-
-                                        // Vérification du dernier paiement lié au contrat
-                                        $latestBill = $contract->bills()->orderBy('periode_number', 'desc')->first();
-                                        if ($latestBill && $latestBill->payment_date) {
-                                            $lastPaymentDate = $latestBill->payment_date;
-                                        }
-
-                                        break;
-                                    }
-                                }
+                                $activeContract = $box->contracts()
+                                    ->where('date_start', '<=', now())
+                                    ->where('date_end', '>=', now())
+                                    ->first();
                             @endphp
 
-                            <p class="status">
-                                <strong>Status: </strong>
-                                <span class="badge
-                            @if ($isOccupied)
-                                bg-danger
-                            @else
-                                bg-success
-                            @endif
-                        ">
-                            @if ($isOccupied)
-                                        Occupé
-                                    @else
-                                        Disponible
-                                    @endif
-                        </span>
-                            </p>
+                            @if ($activeContract)
+                                <div class="alert alert-info p-2">
+                                    <strong>Contrat en cours</strong> (ID: {{ $activeContract->id }})<br>
+                                    <strong>Locataire :</strong> {{ $activeContract->tenant->name }}
+                                </div>
 
-                            @if ($lastPaymentDate)
-                                <p class="payment-status">
-                                    <strong>Dernier paiement:</strong>
-                                    <span class="badge bg-success">Payé le {{ $lastPaymentDate->format('d/m/Y') }}</span>
-                                </p>
+                                @php
+                                    $unpaidBills = $activeContract->bills()->whereNull('payment_date')->count();
+                                @endphp
+
+                                @if ($unpaidBills > 0)
+                                    <div class="alert alert-danger p-2">
+                                        🚨 <strong>{{ $unpaidBills }} facture(s) impayée(s) !</strong>
+                                    </div>
+                                @else
+                                    <div class="alert alert-success p-2">
+                                        ✅ Toutes les factures sont payées.
+                                    </div>
+                                @endif
                             @else
-                                <p class="payment-status">
-                                    <strong>Dernier paiement:</strong>
-                                    <span class="badge bg-warning">Non payé</span>
-                                </p>
+                                <div class="alert alert-secondary p-2">
+                                    Aucun contrat en cours.
+                                </div>
                             @endif
 
-                            <a href="{{ route('boxes.show', $box->id) }}" class="btn btn-info btn-sm">Voir</a>
-                            <a href="{{ route('boxes.edit', $box->id) }}" class="btn btn-warning btn-sm">Modifier</a>
-                            <form action="{{ route('boxes.destroy', $box->id) }}" method="POST" style="display:inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer ce box ?')">Supprimer</button>
-                            </form>
+                            <a href="{{ route('boxes.show', $box->id) }}" class="btn btn-primary mt-2">Détails</a>
                         </div>
                     </div>
                 </div>
             @endforeach
         </div>
-    </div>
 
+    </div>
 @endsection

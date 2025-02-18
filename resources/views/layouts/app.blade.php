@@ -19,6 +19,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('tenants.index') }}">Locataires</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('contractModels.index') }}">Modèles de Contrat</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('contracts.index') }}">Contrats</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('taxes.index') }}">Imposition</a></li>
             </ul>
             <ul class="navbar-nav">
                 @auth
